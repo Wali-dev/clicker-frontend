@@ -1,30 +1,44 @@
-// import React from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
-// import {
-//   createBrowserRouter,
-//   RouterProvider,
-// } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 import './index.css'
-import App from "./App";
+
+import AddLinksPage from "./Components/user/pages/addLinksPage/AddLinksPage";
+import Layout from "./Components/user/layout/Layout";
 
 
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <App />,
-//   },
-//   {
-//     path: "/user",
-//     element: <div>Hello user!</div>,
-//   },
-//   {
-//     path: "/auth",
-//     element: <div>Hello auth!</div>,
-//   },
-// ]);
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        path: "/links",
+        element: <AddLinksPage />
+      },
+      {
+        path: "/appearance",
+        element: <div>THis is the apperance</div>
+      },
+      {
+        path: "/analytics",
+        element: <div>THis is the Analytics</div>
+      },
+      {
+        path: "/setting",
+        element: <div>THis is the setting</div>
+      },
+    ]
+  },
+]);
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  // <React.StrictMode>
-  <App />
-  // </React.StrictMode>
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
 );
+

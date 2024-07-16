@@ -2,9 +2,13 @@ import { TiEqualsOutline } from "react-icons/ti";
 import { BiCategoryAlt } from "react-icons/bi";
 import { MdOutlineAnalytics } from "react-icons/md";
 import { MdOutlineSettings } from "react-icons/md";
+import { NavLink } from "react-router-dom";
+
 
 const Sidebar = () => {
+
     return (
+
         <div className="sm:h-screen relative">
             <div className="flex sm:flex-col p-2 sm:p-5 sm:gap-2 " >
                 <div className="items-center
@@ -16,7 +20,7 @@ const Sidebar = () => {
                     <div className="sm:text-xl">Icon</div>
                 </div>
 
-                <div className="flex flex-col
+                <NavLink to="/links" className="flex flex-col
                             sm:flex-row
                             p-3 sm:w-44 
                             sm:h-12 
@@ -28,8 +32,8 @@ const Sidebar = () => {
 
                     <TiEqualsOutline className="text-2xl" />
                     <div className="sm:text-xl sm:ml-3">Links</div>
-                </div>
-                <div className="flex flex-col
+                </ NavLink>
+                <NavLink to="/appearance" className="flex flex-col
                             sm:flex-row
                             p-3 sm:w-44 
                             sm:h-12 
@@ -37,11 +41,12 @@ const Sidebar = () => {
                             sm:rounded-2xl 
                             hover:bg-orange-100 
                             hover:duration-500 
-                            cursor-pointer">
+                            cursor-pointer" >
+
                     <BiCategoryAlt className="text-2xl" />
                     <div className="sm:text-xl sm:ml-3">Appearance</div>
-                </div>
-                <div className="flex flex-col
+                </ NavLink>
+                <NavLink to="/analytics" className="flex flex-col
                             sm:flex-row
                             p-3 sm:w-44 
                             sm:h-12 
@@ -49,11 +54,12 @@ const Sidebar = () => {
                             sm:rounded-2xl 
                             hover:bg-orange-100 
                             hover:duration-500 
-                            cursor-pointer">
+                            cursor-pointer" >
+
                     <MdOutlineAnalytics className="text-2xl" />
-                    <div className="sm:text-xl sm:ml-3 ">Analytics</div>
-                </div>
-                <div className="flex flex-col
+                    <div className="sm:text-xl sm:ml-3">Analytics</div>
+                </ NavLink>
+                <NavLink to="/setting" className="flex flex-col
                             sm:flex-row
                             p-3 sm:w-44 
                             sm:h-12 
@@ -61,10 +67,11 @@ const Sidebar = () => {
                             sm:rounded-2xl 
                             hover:bg-orange-100 
                             hover:duration-500 
-                            cursor-pointer ">
+                            cursor-pointer" >
+
                     <MdOutlineSettings className="text-2xl" />
-                    <div className="sm:text-xl sm:ml-3">Settings</div>
-                </div>
+                    <div className="sm:text-xl sm:ml-3">Setting</div>
+                </ NavLink>
 
                 <div className="flex 
                                 flex-col 
