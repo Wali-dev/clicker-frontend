@@ -2,11 +2,15 @@ import { SlArrowRight } from "react-icons/sl";
 import { RxArchive } from "react-icons/rx";
 import { MdOutlineViewHeadline } from "react-icons/md";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import uuid from 'react-uuid';
+
+import axios from 'axios';
+
 import LinkCard from "../../../ui/LinkCard";
 
-
-
+axios.defaults.baseURL = "http://localhost:8000/"
 
 
 
@@ -16,31 +20,88 @@ const AddLinksPage = () => {
     const [showLinkList, setLinkList] = useState(true);
     const [showPopUp, setshowPopUp] = useState(false);
 
+    const [edittrigger, setEditTrigger] = useState(false);
 
-    const LinkAddpopUp = (props) => {
-        return (props.trigger) ? (
-            <div className="bg-white text-black w-full mt-6 rounded-2xl">
-                <div className="flex card-body">
-                    <div>
-                        <h2 className="card-title font-bold mb-2">Enter URL</h2>
-                        <input
-                            type="text"
-                            placeholder="www.example.com"
-                            className="input input-bordered w-full max-w-xs" />
+
+    //DATA FETCHING FOR THE LINKS
+    const [usersLinks, setUserslink] = useState();
+
+    useEffect(() => {
+        const fetchLinks = async () => {
+            const response = await axios.get('http://localhost:8000/api/link', {
+                params: { userName: "Mahi" }
+            });
+
+            //FILTERING LINKS IF THEY ARE DELETED OR NOT
+            const filteredLinks = await response.data.filter(item => item.deleted === false)
+            await setUserslink(filteredLinks)
+        }
+        fetchLinks();
+    }, [showPopUp, edittrigger])
+
+
+    const AddUrlPopUp = () => {
+        //ADDING LINKS TO THE DATABASE
+        const [url, setUrl] = useState(null);
+
+        const handleChange = (e) => {
+            const { value, name } = e.target;
+            setUrl((preve) => {
+                return {
+                    ...preve,
+                    [name]: value
+                }
+            })
+        }
+
+        const handleSubmit = async (event) => {
+            event.preventDefault();
+
+            //SETTING PARAMETERS FOR NEW LINK
+            const userName = "Mahi";
+            const link_id = uuid();
+
+            //CONFIG IS USED TO SEND QUERY PARAMS
+            const config = {
+                params: {
+                    userName,
+                    link_id
+                }
+            };
+            const postLink = async () => {
+                await axios.post("http://localhost:8000/api/link", url, config)
+                    .then(response => {
+                        console.log(response.data)
+                    })
+            }
+            await postLink();
+        }
+
+        const handleTriggerFromChild = () => {
+            setEditTrigger(true);
+        };
+
+        return (
+            <form className='w-full bg-slate-500 p-4 mt-6 rounded-2xl' onSubmit={handleSubmit}>
+                <div>
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor='url' className="block  text-sm font-medium text-gray-900 dark:text-white">Enter URL</label>
+                        <input type='text' name='actual_link' id='actual_link' onChange={handleChange} placeholder="https://www.wikipedia.org" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                     </div>
-                    <div className="card-actions justify-end">
-                        <button className="btn btn-error" onClick={() => {
-                            setLinkList(true)
-                            setshowPopUp(false)
-                        }}>close</button>
-                        <button className="btn" onClick={() => {
-                            setLinkList(true)
-                            setshowPopUp(false)
-                        }}>Save</button>
+                    <div className="mt-3">
+                        <div className='btn mr-2' onClick={() => {
+                            setshowPopUp(false);
+                            setLinkList(true);
+                        }}>Cancel</div>
+                        <div className='btn btn-error' type="submit" onClick={() => {
+                            handleSubmit(event);
+                            setshowPopUp(false);
+                            setLinkList(true);
+                        }} > Submit</div>
                     </div>
                 </div>
-            </div>
-        ) : "";
+            </form >
+        )
     }
 
 
@@ -77,7 +138,7 @@ const AddLinksPage = () => {
                                        bg-orange-500
                                        hover:bg-orange-600" onClick={() => {
                             setshowPopUp(true);
-                            setLinkList(false)
+                            setLinkList(false);
                         }}>+ Add link</button>
                 </div>
 
@@ -93,11 +154,13 @@ const AddLinksPage = () => {
                     </div>
                 </div>
 
-                <LinkAddpopUp trigger={showPopUp} className="w-full" />
-                {/* link card goes from here */}
+                {/* POPUP GOES HERE */}
+                {showPopUp && <AddUrlPopUp />}
 
+
+                {/* LINK CARD GOES FROM HERE */}
                 {
-                    showLinkList && <LinkCard />
+                    showLinkList && usersLinks && usersLinks.map((link, index) => <LinkCard props={link} key={index} />)
                 }
 
             </div >
