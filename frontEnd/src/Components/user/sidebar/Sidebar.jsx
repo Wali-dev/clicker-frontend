@@ -9,7 +9,7 @@ const Sidebar = () => {
 
     return (
 
-        <div className="sm:h-screen relative">
+        <div className="sm:h-screen relative sticky top-0 ">
             <div className="flex sm:flex-col p-2 sm:p-5 sm:gap-2 " >
                 <div className="items-center
                             p-3 sm:w-44 
@@ -20,7 +20,7 @@ const Sidebar = () => {
                     <div className="sm:text-xl">Icon</div>
                 </div>
 
-                <NavLink to="/links" className="flex flex-col
+                <NavLink to="links" className="flex flex-col
                             sm:flex-row
                             p-3 sm:w-44 
                             sm:h-12 
@@ -33,7 +33,7 @@ const Sidebar = () => {
                     <TiEqualsOutline className="text-2xl" />
                     <div className="sm:text-xl sm:ml-3">Links</div>
                 </ NavLink>
-                <NavLink to="/appearance" className="flex flex-col
+                <NavLink to="appearance" className="flex flex-col
                             sm:flex-row
                             p-3 sm:w-44 
                             sm:h-12 
@@ -46,7 +46,7 @@ const Sidebar = () => {
                     <BiCategoryAlt className="text-2xl" />
                     <div className="sm:text-xl sm:ml-3">Appearance</div>
                 </ NavLink>
-                <NavLink to="/analytics" className="flex flex-col
+                <NavLink to="analytics" className="flex flex-col
                             sm:flex-row
                             p-3 sm:w-44 
                             sm:h-12 
@@ -59,7 +59,7 @@ const Sidebar = () => {
                     <MdOutlineAnalytics className="text-2xl" />
                     <div className="sm:text-xl sm:ml-3">Analytics</div>
                 </ NavLink>
-                <NavLink to="/setting" className="flex flex-col
+                <NavLink to="setting" className="flex flex-col
                             sm:flex-row
                             p-3 sm:w-44 
                             sm:h-12 

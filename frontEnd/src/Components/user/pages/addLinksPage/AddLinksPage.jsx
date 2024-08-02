@@ -1,27 +1,27 @@
 import { SlArrowRight } from "react-icons/sl";
 import { RxArchive } from "react-icons/rx";
 import { MdOutlineViewHeadline } from "react-icons/md";
-
 import { useEffect, useState } from "react";
-
 import uuid from 'react-uuid';
-
 import axios from 'axios';
-
 import LinkCard from "../../../ui/LinkCard";
+import { NavLink } from "react-router-dom";
 
-axios.defaults.baseURL = "http://localhost:8000/"
+axios.defaults.baseURL = "http://localhost:8000/";
 
-
-
+const userName = "Mahi";
 
 const AddLinksPage = () => {
 
+    //TRIGGER FOR REALTIME DATA CHANGE
+    const [edittrigger, setEditTrigger] = useState(false);
+    const handleTriggerFromChild = () => {
+        setEditTrigger(!edittrigger);
+    };
+
+    //STATES FOR SHOWING LINKLISTS AND LINK ADD POPUPS
     const [showLinkList, setLinkList] = useState(true);
     const [showPopUp, setshowPopUp] = useState(false);
-
-    const [edittrigger, setEditTrigger] = useState(false);
-
 
     //DATA FETCHING FOR THE LINKS
     const [usersLinks, setUserslink] = useState();
@@ -33,12 +33,11 @@ const AddLinksPage = () => {
             });
 
             //FILTERING LINKS IF THEY ARE DELETED OR NOT
-            const filteredLinks = await response.data.filter(item => item.deleted === false)
-            await setUserslink(filteredLinks)
+            const filteredLinks = await response.data.filter(item => item.deleted === false && item.archived === false)
+            setUserslink(filteredLinks)
         }
         fetchLinks();
     }, [showPopUp, edittrigger])
-
 
     const AddUrlPopUp = () => {
         //ADDING LINKS TO THE DATABASE
@@ -77,10 +76,6 @@ const AddLinksPage = () => {
             await postLink();
         }
 
-        const handleTriggerFromChild = () => {
-            setEditTrigger(true);
-        };
-
         return (
             <form className='w-full bg-slate-500 p-4 mt-6 rounded-2xl' onSubmit={handleSubmit}>
                 <div>
@@ -104,7 +99,6 @@ const AddLinksPage = () => {
         )
     }
 
-
     return (
         <div className="mt-0 sm:mt-4 mx-4">
             <div className="flex flex-wrap 
@@ -117,7 +111,7 @@ const AddLinksPage = () => {
                 <div>
                     <div>Your links are live here:</div>
                     <div>
-                        <a href="https://www.w3schools.com">clicker.com/userName</a>
+                        <a href={`http://localhost:5173/${userName}`}>{`http://localhost:5173/${userName}`}</a>
                     </div>
                 </div>
                 <button className="btn btn-wide rounded-3xl">Copy your Clicker URL</button>
@@ -143,24 +137,25 @@ const AddLinksPage = () => {
                 </div>
 
                 <div className="flex justify-between items-center h-12 sm:mt-4 w-full">
-                    <div className="flex justify-center items-center">
+                    <div className="flex items-center text-center gap-1">
                         <MdOutlineViewHeadline />
                         Add header
                     </div>
-                    <div className="flex justify-center items-center">
-                        <RxArchive />
-                        <div>View archive</div>
-                        <SlArrowRight />
+                    <div>
+                        <NavLink to="../archived" className="flex items-center text-center gap-1">
+                            <div>View archive</div>
+                            <RxArchive />
+                        </NavLink>
+
                     </div>
                 </div>
 
                 {/* POPUP GOES HERE */}
                 {showPopUp && <AddUrlPopUp />}
 
-
                 {/* LINK CARD GOES FROM HERE */}
                 {
-                    showLinkList && usersLinks && usersLinks.map((link, index) => <LinkCard props={link} key={index} />)
+                    showLinkList && usersLinks && usersLinks.map((link, index) => <LinkCard props={link} key={index} onTrigger={handleTriggerFromChild} />)
                 }
 
             </div >

@@ -8,31 +8,47 @@ import './index.css'
 
 import AddLinksPage from "./Components/user/pages/addLinksPage/AddLinksPage";
 import Layout from "./Components/user/layout/Layout";
+import ArchivedLinks from "./Components/user/pages/archivedPage/ArchivedLinks";
+import PublicPage from "./Components/public/PublicPage";
 
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/admin",
     element: <Layout />,
-    children: [
+    _children: [
       {
-        path: "/links",
+        path: "links",
         element: <AddLinksPage />
       },
       {
-        path: "/appearance",
+        path: "appearance",
         element: <div>THis is the apperance</div>
       },
       {
-        path: "/analytics",
+        path: "analytics",
         element: <div>THis is the Analytics</div>
       },
       {
-        path: "/setting",
+        path: "setting",
         element: <div>THis is the setting</div>
       },
-    ]
+      {
+        path: "archived",
+        element: <ArchivedLinks />
+      },
+    ],
+    get children() {
+      return this._children;
+    },
+    set children(value) {
+      this._children = value;
+    },
   },
+  {
+    path: '/:userName',
+    element: <PublicPage />
+  }
 ]);
 
 
