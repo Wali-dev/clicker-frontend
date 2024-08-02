@@ -9,7 +9,10 @@ import './index.css'
 import AddLinksPage from "./Components/user/pages/addLinksPage/AddLinksPage";
 import Layout from "./Components/user/layout/Layout";
 import ArchivedLinks from "./Components/user/pages/archivedPage/ArchivedLinks";
-import PublicPage from "./Components/public/PublicPage";
+import PublicPage from "./Components/public/linkLandingPage/PublicPage";
+import PublicLanding from "./Components/public/landingPage/PublicLanding";
+import SignIn from "./Components/public/auth/SignIn";
+import SignUp from "./Components/public/auth/SignUp";
 
 
 const router = createBrowserRouter([
@@ -48,6 +51,18 @@ const router = createBrowserRouter([
   {
     path: '/:userName',
     element: <PublicPage />
+  },
+  {
+    path: '/',
+    element: <PublicLanding />
+  },
+  {
+    path: '/signin',
+    element: <SignIn />
+  },
+  {
+    path: '/signup',
+    element: <SignUp />
   }
 ]);
 

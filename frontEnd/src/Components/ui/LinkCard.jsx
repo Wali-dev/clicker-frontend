@@ -78,6 +78,10 @@ const LinkCard = (props) => {
                 actual_link: textBoxValue2
             }
 
+            //CHCECKING IF UPDATED LINK STARTS WITH PROPER HEADER OR NOT
+            if (!update.actual_link.startsWith("http")) {
+                update.actual_link = "https://" + update.actual_link;
+            }
             //CONFIG IS USED TO SEND QUERY PARAMS
             const config = {
                 params: {
@@ -226,71 +230,129 @@ const LinkCard = (props) => {
         }
     }
 
-
     return (
-        <div className="sm:mt-4">
-            <div className="w-full rounded-3xl my-4 h-36 grid grid-cols-12 relative bg-slate-50">   {/*this is the section is devided into two drag button and rest of the body */}
-                <div className=" col-span-1 my-auto text-2xl"><RxDragHandleDots2 /></div> {/* drag icon*/}
-                <div className="col-span-11 my-auto">  {/* rest of the body*/}
-                    <div className="flex items-center justify-between "> {/* title, link edit button and share+active button*/}
-                        <div className=""> {/* title link edit block*/}
-                            <div className="flex items-center font-semibold">{!textBox && link_title && link_title}
-                                {textBox &&
-                                    //  <input type="text" name='title' id='title' defaultValue={link_title} onChange={() => { handleChange(event) }}></input>
-                                    <div className="flex">
+        <div className="sm:mt-6">
+            <div className="w-full rounded-2xl my-4 h-40 grid grid-cols-12 bg-gray-100 shadow-lg overflow-hidden">
+                {/* DRAG ICONS GOES HERE */}
+                <div className="col-span-1 flex items-center justify-center text-2xl text-gray-600">
+                    <RxDragHandleDots2 />
+                </div>
+
+                {/* BODY */}
+                <div className="col-span-11 flex flex-col sm:p-4">
+                    {/* TITLE AND LINK SECTION */}
+                    <div className="flex flex-col lg:flex-row lg:justify-between items-start lg:items-center mb-0 sm:mb-4">
+                        <div className="flex flex-col w-full">
+                            {/* TITLE */}
+                            <div className="flex items-center font-semibold text-lg mb-2">
+                                {!textBox && link_title && <span>{link_title}</span>}
+                                {textBox && (
+                                    <div className="flex items-center border-b border-gray-300 pb-1">
                                         <input
-                                            // ref={inputRef}
                                             type="text"
                                             name="title"
                                             id="title"
-                                            defaultValue={link_title && link_title}
+                                            defaultValue={link_title}
                                             onChange={handleChange}
+                                            className="border rounded-lg px-2 py-1 mr-2 focus:outline-none"
                                         />
-                                        <TiTick className="text-2xl rounded text-green-300  hover:bg-green-900" onClick={() => { handleSave() }} />
-                                        <MdOutlineCancel className="text-md rounded p-3 text-red-600 hover:bg-red-700" onClick={() => { setTextBox(false) }} />
+                                        <TiTick
+                                            className="text-2xl text-green-500 hover:bg-green-100 rounded p-1 cursor-pointer"
+                                            onClick={() => handleSave()}
+                                        />
+                                        <MdOutlineCancel
+                                            className="text-2xl text-red-600 hover:bg-red-100 rounded p-1 cursor-pointer"
+                                            onClick={() => setTextBox(false)}
+                                        />
                                     </div>
-                                }
-                                <FiEdit2 className="ml-3" onClick={() => { setTextBox(true); }} />
+                                )}
+                                <FiEdit2
+                                    className="ml-3 text-blue-500 cursor-pointer hover:text-blue-700"
+                                    onClick={() => setTextBox(true)}
+                                />
                             </div>
-                            <div className="flex items-center font-semibold w-auto text-wrap">{!textBox2 && actual_link && (actual_link.length > 30 ? actual_link.slice(0, 25) + '...' : actual_link)}
-                                {textBox2 &&
-                                    <div className="flex">
+
+                            {/* LINK INPUT */}
+                            <div className="flex items-center font-semibold text-lg">
+                                {!textBox2 && actual_link && (
+                                    <span>
+                                        {actual_link.length > 30 ? `${actual_link.slice(0, 30)}...` : actual_link}
+                                    </span>
+                                )}
+                                {textBox2 && (
+                                    <div className="flex items-center border-b border-gray-300 pb-1">
                                         <input
                                             type="text"
                                             name="link"
                                             id="link"
                                             defaultValue={actual_link}
                                             onChange={handleChange2}
-                                            className="w-60"
+                                            className="border rounded-lg px-2 py-1 mr-2 w-60 focus:outline-none"
                                         />
-                                        <TiTick className="text-2xl rounded text-green-300  hover:bg-green-900" onClick={() => { handleSave2() }} />
-                                        <MdOutlineCancel className="text-md rounded p-3 text-red-600 hover:bg-red-700" onClick={() => { setTextBox2(false) }} />
+                                        <TiTick
+                                            className="text-2xl text-green-500 hover:bg-green-100 rounded p-1 cursor-pointer"
+                                            onClick={() => handleSave2()}
+                                        />
+                                        <MdOutlineCancel
+                                            className="text-2xl text-red-600 hover:bg-red-100 rounded p-1 cursor-pointer"
+                                            onClick={() => setTextBox2(false)}
+                                        />
                                     </div>
-                                }
-                                <FiEdit2 className="ml-3" onClick={() => { setTextBox2(true); }} />
+                                )}
+                                <FiEdit2
+                                    className="ml-3 text-blue-500 cursor-pointer hover:text-blue-700"
+                                    onClick={() => setTextBox2(true)}
+                                />
                             </div>
                         </div>
-                        <div className="flex mr-8"> {/* share + active toggle*/}
-                            <button><RxShare2 className="text-xl mr-2" /></button>
-                            <input type="checkbox" className="toggle toggle-sm" checked={isChecked} onChange={() => {
-                                handleToggle(link_id, "active")
-                            }} />
+
+                        {/* SHARE LINK + ACTIVE TOGGLE */}
+                        <div className="flex items-center space-x-4 mt-4 lg:mt-0">
+                            <button className="p-2 text-gray-600 hover:text-gray-800">
+                                <RxShare2 className="text-xl" />
+                            </button>
+                            <input
+                                type="checkbox"
+                                className="toggle toggle-sm"
+                                checked={isChecked}
+                                onChange={() => handleToggle(link_id, "active")}
+                            />
                         </div>
                     </div>
-                    <div className="mt-4 flex flex-wrap shrink gap-2 text-lg font-thin mx-2" > {/* action buttons*/}
-                        <button><AiOutlineLayout /></button>
-                        <button><MdOutlineWallpaper /></button>
-                        <button><MdOutlineSchedule /></button>
-                        <button>< IoMdLock /></button>
-                        <button><IoAnalytics /></button>
-                        <button onClick={() => { handleUpdate(props.props.link_id, "archive") }} ><RxArchive /></button>
-                        <button className="absolute right-12 text-2xl rounded hover:bg-red-600 hover:text-white" onClick={() => { setTextBoxValue(link_title); handleUpdate(props.props.link_id, "delete") }}><MdOutlineDeleteOutline /></button>
-                    </div >
-                </div >
-            </div >
 
-        </div >
-
+                    {/* ACTION BUTTONS */}
+                    <div className="flex flex-wrap gap-2 text-lg sm:mb-4">
+                        <button className="p-2 rounded hover:bg-gray-200 transition-colors">
+                            <AiOutlineLayout />
+                        </button>
+                        <button className="p-2 rounded hover:bg-gray-200 transition-colors">
+                            <MdOutlineWallpaper />
+                        </button>
+                        <button className="p-2 rounded hover:bg-gray-200 transition-colors">
+                            <MdOutlineSchedule />
+                        </button>
+                        <button className="p-2 rounded hover:bg-gray-200 transition-colors">
+                            <IoMdLock />
+                        </button>
+                        <button className="p-2 rounded hover:bg-gray-200 transition-colors">
+                            <IoAnalytics />
+                        </button>
+                        <button
+                            className="p-2 rounded hover:bg-gray-200 transition-colors"
+                            onClick={() => handleUpdate(props.props.link_id, "archive")}
+                        >
+                            <RxArchive />
+                        </button>
+                        <button
+                            className="text-2xl text-red-600 rounded hover:bg-red-600 hover:text-white transition-colors"
+                            onClick={() => { setTextBoxValue(link_title); handleUpdate(props.props.link_id, "delete"); }}
+                        >
+                            <MdOutlineDeleteOutline />
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 }
 

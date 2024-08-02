@@ -53,10 +53,17 @@ const AddLinksPage = () => {
             })
         }
 
+
+
         const handleSubmit = async (event) => {
             event.preventDefault();
 
-            //SETTING PARAMETERS FOR NEW LINK
+            //CHECKING IF THE URL IS STARTING WITH THE PROPER HEADER OR ELSE ADD THE HEADER
+            if (!url.actual_link.startsWith("http")) {
+                setUrl(url.actual_link = "https://" + url.actual_link);
+            }
+
+            // SETTING PARAMETERS FOR NEW LINK
             const userName = "Mahi";
             const link_id = uuid();
 
@@ -77,90 +84,107 @@ const AddLinksPage = () => {
         }
 
         return (
-            <form className='w-full bg-slate-500 p-4 mt-6 rounded-2xl' onSubmit={handleSubmit}>
-                <div>
-                    <div className="flex flex-col gap-2">
-                        <label htmlFor='url' className="block  text-sm font-medium text-gray-900 dark:text-white">Enter URL</label>
-                        <input type='text' name='actual_link' id='actual_link' onChange={handleChange} placeholder="https://www.wikipedia.org" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+
+            <form className="w-full bg-white p-6 mt-6 rounded-2xl shadow-lg" onSubmit={handleSubmit}>
+                <div className="flex flex-col gap-4">
+                    {/* URL Input Field */}
+                    <div>
+                        <label htmlFor="actual_link" className="block text-sm font-medium text-gray-700">Enter URL</label>
+                        <input
+                            type="text"
+                            name="actual_link"
+                            id="actual_link"
+                            onChange={handleChange}
+                            placeholder="https://www.wikipedia.org"
+                            className="mt-1 block w-full px-4 py-2 border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
                     </div>
-                    <div className="mt-3">
-                        <div className='btn mr-2' onClick={() => {
-                            setshowPopUp(false);
-                            setLinkList(true);
-                        }}>Cancel</div>
-                        <div className='btn btn-error' type="submit" onClick={() => {
-                            handleSubmit(event);
-                            setshowPopUp(false);
-                            setLinkList(true);
-                        }} > Submit</div>
+
+                    {/* Buttons */}
+                    <div className="flex justify-end gap-4 mt-4">
+                        <button
+                            type="button"
+                            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg shadow-sm hover:bg-gray-400 transition-colors"
+                            onClick={() => {
+                                setshowPopUp(false);
+                                setLinkList(true);
+                            }}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 transition-colors"
+                            onClick={(event) => {
+                                handleSubmit(event);
+                                setshowPopUp(false);
+                                setLinkList(true);
+                            }}
+                        >
+                            Submit
+                        </button>
                     </div>
                 </div>
-            </form >
+            </form>
+
+
         )
     }
 
     return (
-        <div className="mt-0 sm:mt-4 mx-4">
-            <div className="flex flex-wrap 
-                            justify-around 
-                            bg-slate-300 
-                            sm:rounded-3xl
-                            py-4
-                            items-center sm:space-y-2 
-                            space-y-2 ">
-                <div>
-                    <div>Your links are live here:</div>
-                    <div>
-                        <a href={`http://localhost:5173/${userName}`}>{`http://localhost:5173/${userName}`}</a>
-                    </div>
+        <div className="mt-4 mx-4">
+
+            {/* HEADER SECTION */}
+            <div className="flex flex-wrap justify-between bg-blue-200 rounded-3xl py-4 px-6 items-center">
+                <div className="flex flex-col">
+                    <span className="text-sm text-gray-700">Your links are live here:</span>
+                    <a href={`http://localhost:5173/${userName}`} className="text-orange-600 hover:underline">
+                        {`http://localhost:5173/${userName}`}
+                    </a>
                 </div>
-                <button className="btn btn-wide rounded-3xl">Copy your Clicker URL</button>
+                <button className="px-4 py-2 bg-orange-600 text-white font-semibold text-sm rounded-full shadow-md hover:bg-orange-700 transition-colors">
+                    Copy your Clicker URL
+                </button>
             </div>
 
-            <div className="flex flex-col max-w-[700px] m-auto">
-                <div className="h-24 p-5">
-                    <button className="btn btn-active rounded-3xl w-24 text-white bg-black">Links</button>
-                    <button className="btn btn-active rounded-3xl w-24 text-white bg-black ml-2">Shop</button>
+            {/* BUTTON SECTION */}
+            <div className="flex flex-col max-w-[700px] mx-auto mt-6">
+                <div className="flex gap-2 mb-4">
+                    <button className="px-4 py-2 bg-black text-white rounded-full shadow-md hover:bg-gray-800 transition-colors">Links</button>
+                    <button className="px-4 py-2 bg-black text-white rounded-full shadow-md hover:bg-gray-800 transition-colors">Shop</button>
                 </div>
-                <div className="flex justify-center items-center">
-                    <button className="text-white 
-                                       font-semibold
-                                       text-lg tracking-wide
-                                       w-full
-                                       h-12
-                                       rounded-full
-                                       bg-orange-500
-                                       hover:bg-orange-600" onClick={() => {
+                <div className="flex justify-center mb-4">
+                    <button
+                        className="w-full px-6 py-3 bg-orange-500 text-white font-semibold rounded-full shadow-md hover:bg-orange-600 transition-colors"
+                        onClick={() => {
                             setshowPopUp(true);
                             setLinkList(false);
-                        }}>+ Add link</button>
+                        }}
+                    >
+                        + Add link
+                    </button>
                 </div>
-
-                <div className="flex justify-between items-center h-12 sm:mt-4 w-full">
-                    <div className="flex items-center text-center gap-1">
-                        <MdOutlineViewHeadline />
+                <div className="flex justify-between items-center h-12 mb-4">
+                    <div className="flex items-center text-gray-700 gap-2">
+                        <MdOutlineViewHeadline className="text-lg" />
                         Add header
                     </div>
-                    <div>
-                        <NavLink to="../archived" className="flex items-center text-center gap-1">
-                            <div>View archive</div>
-                            <RxArchive />
-                        </NavLink>
-
-                    </div>
+                    <NavLink to="../archived" className="flex items-center text-gray-700 gap-2 hover:text-blue-600">
+                        <span>View archive</span>
+                        <RxArchive className="text-lg" />
+                    </NavLink>
                 </div>
 
                 {/* POPUP GOES HERE */}
                 {showPopUp && <AddUrlPopUp />}
 
                 {/* LINK CARD GOES FROM HERE */}
-                {
-                    showLinkList && usersLinks && usersLinks.map((link, index) => <LinkCard props={link} key={index} onTrigger={handleTriggerFromChild} />)
-                }
+                {showLinkList && usersLinks && usersLinks.map((link, index) => (
+                    <LinkCard props={link} key={index} onTrigger={handleTriggerFromChild} />
+                ))}
+            </div>
+        </div>
 
-            </div >
-
-        </div >
     )
 }
 

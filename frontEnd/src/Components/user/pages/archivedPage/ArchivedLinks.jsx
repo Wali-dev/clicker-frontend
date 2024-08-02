@@ -31,26 +31,23 @@ const ArchivedLinks = () => {
     }, [trigger])
 
     return (
-        <div className="my-5">
-            <NavLink to="../links">
-                <div className="flex text-center items-center ml-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5" />
-                    </svg>
-                    <div>Go back</div>
-                </div>
+        <div className="my-8 mx-4">
+            <NavLink to="../links" className="flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-300 mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5" />
+                </svg>
+                <span className="text-lg font-semibold">Go back</span>
             </NavLink>
-            <div className=" my-5">
-                <div className="text-center font-light">Here are links that has been archived
-                    <p className="font-medium">Click on the restore button active them</p>
-                </div>
-                <div className="mt-4">
-                    {
-                        usersLinks && usersLinks.map((link, index) => <ArchivedLinkCard key={index} props={link} onTrigger={triggerFunction} />)
-                    }
-                </div>
-                <div>
-                </div>
+
+            <div className="text-center mb-8">
+                <h2 className="text-xl font-light mb-2">Here are the links that have been archived</h2>
+                <p className="text-base font-medium text-gray-700">Click on the restore button to activate them</p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4">
+                {usersLinks && usersLinks.map((link, index) => (
+                    <ArchivedLinkCard key={index} props={link} onTrigger={triggerFunction} />
+                ))}
             </div>
         </div>
     )

@@ -1,15 +1,27 @@
-import { Outlet } from "react-router-dom"
-import Sidebar from "../sidebar/Sidebar"
-import Viewright from "../viewright/Viewright"
+
+import { Outlet } from "react-router-dom";
+import Sidebar from "../sidebar/Sidebar";
+import Viewright from "../viewright/Viewright";
 
 const Layout = () => {
     return (
-        <div className="grid sm:grid-cols-12">
-            <div className=" sm:col-span-2 "> <Sidebar /></div>
-            <div className="bg-blue-100 sm:col-span-6"><Outlet /></div>
-            <div className="bg-red-400 sm:col-span-4 hidden sm:block"><Viewright /></div>
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 min-h-screen">
+            {/* SIDEBAR*/}
+            <div className="bg-gray-100 sm:col-span-2 border-r border-gray-200">
+                <Sidebar />
+            </div>
+
+            {/* MAIN */}
+            <div className="bg-white sm:col-span-6 border-r border-gray-200 p-4">
+                <Outlet />
+            </div>
+
+            {/* RIGNT VIEW */}
+            <div className="bg-gray-100 sm:col-span-4 hidden sm:block border-l border-gray-200">
+                <Viewright />
+            </div>
         </div>
-    )
+    );
 }
-// sm:sticky sm:left-0 sm:top-0 bg-white
-export default Layout
+
+export default Layout;
