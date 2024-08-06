@@ -53,23 +53,25 @@ const PublicLanding = () => {
                 </div>
                 <div className="navbar-end gap-2">
                     <a className="btn" href='/signin'>Sign In</a>
-                    <a className="btn" href='/signup'>Sign Up</a>
+                    <a className="btn" href='/signup/1'>Sign Up</a>
                 </div>
             </div>
 
             {/* BODY GOES HERE */}
 
-            <div className="min-h-screen w-full flex flex-col items-center ">
+            <div className="min-h-screen w-full flex flex-col items-center " >
 
                 {/* HERO SECTION */}
-                <div className="hero bg-base-200 min-h-screen">
+                <div className="hero bg-base-200 min-h-screen " style={{
+                    backgroundImage: "url(http://cdn.backgroundhost.com/backgrounds/subtlepatterns/tileable_wood_texture.png)",
+                }}>
                     <div className="hero-content text-center">
                         <div className="max-w-md">
                             <h1 className="text-5xl font-bold">Welcome to Clicker</h1>
                             <p className="py-6">
                                 Quickly connect your links and grow your online presence effortlessly.
                             </p>
-                            <a href="/signup" className="bg-white text-orange-600 py-2 px-6 rounded-full text-lg font-bold hover:bg-gray-100">Get Started</a>
+                            <a href="/signup/1" className="bg-white text-orange-600 py-2 px-6 rounded-full text-lg font-bold hover:bg-gray-100">Get Started</a>
                         </div>
                     </div>
                 </div>
