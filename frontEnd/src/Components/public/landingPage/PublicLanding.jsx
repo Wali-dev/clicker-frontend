@@ -52,8 +52,8 @@ const PublicLanding = () => {
                     </ul>
                 </div>
                 <div className="navbar-end gap-2">
-                    <a className="btn">Sign In</a>
-                    <a className="btn">Sign Up</a>
+                    <a className="btn" href='/signin'>Sign In</a>
+                    <a className="btn" href='/signup'>Sign Up</a>
                 </div>
             </div>
 

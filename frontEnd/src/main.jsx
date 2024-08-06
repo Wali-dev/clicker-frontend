@@ -12,7 +12,9 @@ import ArchivedLinks from "./Components/user/pages/archivedPage/ArchivedLinks";
 import PublicPage from "./Components/public/linkLandingPage/PublicPage";
 import PublicLanding from "./Components/public/landingPage/PublicLanding";
 import SignIn from "./Components/public/auth/SignIn";
-import SignUp from "./Components/public/auth/SignUp";
+import SignUp from "./Components/public/auth/signUp/SignUp";
+import SignUserName from "./Components/public/auth/signUp/SignUserName";
+import SignUserProfession from "./Components/public/auth/signUp/SignUserProfession";
 
 
 const router = createBrowserRouter([
@@ -61,8 +63,16 @@ const router = createBrowserRouter([
     element: <SignIn />
   },
   {
-    path: '/signup',
+    path: '/signup/2',
     element: <SignUp />
+  },
+  {
+    path: '/signup/1',
+    element: <SignUserName />
+  },
+  {
+    path: '/signup/3',
+    element: <SignUserProfession />
   }
 ]);
 
