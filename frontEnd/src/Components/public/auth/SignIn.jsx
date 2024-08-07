@@ -26,7 +26,7 @@ const SignIn = () => {
             const response = await axios.post('/api/signin', { email, password });
             // Assuming the response contains a success message or token
             console.log('Sign-in successful:', response.data);
-            navigate('/dashboard'); // Redirect to the dashboard or another page upon successful sign-in
+            navigate('/dashboard');
         } catch (error) {
             console.error('Sign-in error:', error);
             setError('Invalid email or password. Please try again.');
