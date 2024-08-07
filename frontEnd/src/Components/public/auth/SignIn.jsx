@@ -23,10 +23,23 @@ const SignIn = () => {
         }
 
         try {
-            const response = await axios.post('/api/signin', { email, password });
+            const params = {
+                userName: email,
+                password: password
+            };
+
+            const loginUser = async () => {
+                await axios.post("http://localhost:8000/api/auth/login", params)
+                    .then(response => {
+                        console.log(response.data)
+                    })
+            }
+            await loginUser();
+
+            // const response = await axios.post('/api/signin', { email, password });
             // Assuming the response contains a success message or token
-            console.log('Sign-in successful:', response.data);
-            navigate('/dashboard');
+            // console.log('Sign-in successful:', response.data);
+            // navigate('/dashboard');
         } catch (error) {
             console.error('Sign-in error:', error);
             setError('Invalid email or password. Please try again.');
@@ -39,15 +52,15 @@ const SignIn = () => {
                 <div className="mb-5 text-xl font-medium">Sign In</div>
                 <div className="mb-5">
                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Your email
+                        Your email or username
                     </label>
                     <input
-                        type="email"
-                        id="email"
+
+                        id="email/userName"
                         value={email}
                         onChange={handleEmailChange}
                         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500"
-                        placeholder="name@gmail.com"
+
                         required
                     />
                 </div>
