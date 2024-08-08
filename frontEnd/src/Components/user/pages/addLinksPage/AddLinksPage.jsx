@@ -1,4 +1,4 @@
-import { SlArrowRight } from "react-icons/sl";
+
 import { RxArchive } from "react-icons/rx";
 import { MdOutlineViewHeadline } from "react-icons/md";
 import { useEffect, useState } from "react";
@@ -9,9 +9,11 @@ import { NavLink } from "react-router-dom";
 
 axios.defaults.baseURL = "http://localhost:8000/";
 
-const userName = "Mahi";
+// const userName = "Mahi";
 
 const AddLinksPage = () => {
+    //SET CURRENT USER
+    const [currentUser, setCurrentUser] = useState("");
 
     //TRIGGER FOR REALTIME DATA CHANGE
     const [edittrigger, setEditTrigger] = useState(false);
@@ -27,9 +29,26 @@ const AddLinksPage = () => {
     const [usersLinks, setUserslink] = useState();
 
     useEffect(() => {
+        //GET THE STORED TOKEN OF THE CURRENT USER
+        const storedToken = localStorage.getItem('authToken');
+
+        //USING THE TOKEN TO GET HE USER INFORMATIONS
+        const fetchUserName = async () => {
+            const response = await axios.get('http://localhost:8000/api/user/loggeduser', {
+                headers: {
+                    'Authorization': `Bearer ${storedToken}`
+                }
+            })
+            setCurrentUser(response.data);
+        }
+        fetchUserName();
+    }, [])
+
+    useEffect(() => {
+        const { userName } = currentUser;
         const fetchLinks = async () => {
             const response = await axios.get('http://localhost:8000/api/link', {
-                params: { userName: "Mahi" }
+                params: { userName }
             });
 
             //FILTERING LINKS IF THEY ARE DELETED OR NOT
@@ -37,7 +56,7 @@ const AddLinksPage = () => {
             setUserslink(filteredLinks)
         }
         fetchLinks();
-    }, [showPopUp, edittrigger])
+    }, [showPopUp, edittrigger, currentUser])
 
     const AddUrlPopUp = () => {
         //ADDING LINKS TO THE DATABASE
@@ -64,7 +83,7 @@ const AddLinksPage = () => {
             }
 
             // SETTING PARAMETERS FOR NEW LINK
-            const userName = "Mahi";
+            const userName = currentUser.userName;
             const link_id = uuid();
 
             //CONFIG IS USED TO SEND QUERY PARAMS
@@ -138,8 +157,8 @@ const AddLinksPage = () => {
             <div className="flex flex-wrap justify-between bg-blue-200 rounded-3xl py-4 px-6 items-center">
                 <div className="flex flex-col">
                     <span className="text-sm text-gray-700">Your links are live here:</span>
-                    <a href={`http://localhost:5173/${userName}`} className="text-orange-600 hover:underline">
-                        {`http://localhost:5173/${userName}`}
+                    <a href={`http://localhost:5173/${currentUser.userName}`} className="text-orange-600 hover:underline">
+                        {`http://localhost:5173/${currentUser.userName}`}
                     </a>
                 </div>
                 <button className="px-4 py-2 bg-orange-600 text-white font-semibold text-sm rounded-full shadow-md hover:bg-orange-700 transition-colors">

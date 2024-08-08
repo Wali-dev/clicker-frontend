@@ -21,31 +21,25 @@ const SignIn = () => {
             setError('You must accept the terms and conditions.');
             return;
         }
-
         try {
-            const params = {
+            const body = {
                 userName: email,
                 password: password
             };
-
             const loginUser = async () => {
-                await axios.post("http://localhost:8000/api/auth/login", params)
+                await axios.post("http://localhost:8000/api/auth/login", body)
                     .then(response => {
-                        console.log(response.data)
+                        localStorage.setItem('authToken', response.data.token); //STORE THE TOKEN IN LOCAL STORAGE
+
                     })
             }
             await loginUser();
-
-            // const response = await axios.post('/api/signin', { email, password });
-            // Assuming the response contains a success message or token
-            // console.log('Sign-in successful:', response.data);
-            // navigate('/dashboard');
+            navigate('/admin/links');
         } catch (error) {
             console.error('Sign-in error:', error);
             setError('Invalid email or password. Please try again.');
         }
     };
-
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4 sm:p-6 lg:p-8">
             <form className="max-w-sm mx-auto bg-white p-6 rounded-lg shadow-md" onSubmit={handleSignInClick}>
