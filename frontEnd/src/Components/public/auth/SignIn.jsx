@@ -29,12 +29,17 @@ const SignIn = () => {
             const loginUser = async () => {
                 await axios.post("http://localhost:8000/api/auth/login", body)
                     .then(response => {
-                        localStorage.setItem('authToken', response.data.token); //STORE THE TOKEN IN LOCAL STORAGE
-
+                        if (response.data.status === 'Success') {
+                            localStorage.setItem('authToken', response.data.token); //STORE THE TOKEN IN LOCAL STORAGE
+                            navigate('/admin/links');
+                        }
+                        else {
+                            alert("Check your credentials")
+                        }
                     })
             }
             await loginUser();
-            navigate('/admin/links');
+
         } catch (error) {
             console.error('Sign-in error:', error);
             setError('Invalid email or password. Please try again.');
