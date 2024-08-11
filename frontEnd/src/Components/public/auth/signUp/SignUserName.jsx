@@ -1,19 +1,35 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const SignUserName = () => {
-    const [username, setUsername] = useState('');
+    const [userName, setUsername] = useState('');
     const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         setUsername(e.target.value);
     };
 
-    const handleNextClick = () => {
-        console.log('Username:', username);
-        // Call your function here, e.g., modifyFunction(username);
-        navigate('/signup/2');
+    const handleNextClick = async () => {
+        const setUserName = async () => {
+            const config = {
+                params: { userName }
+            };
+            await axios.post('http://localhost:8000/api/user/register', null, config)
+                //NULL IS ADDED CAUSE WE DONT WANT TO SEND ANYTHING IN THE BODY ONLY SENDIGN USERNAME AS QUERY PARAMS
+                .then(response => {
+                    if (response.data.status === 'Success') {
+                        localStorage.setItem('userName', response.data.user.userName); //STORE THE USERNAME IN LOCAL STORAGE
+                        navigate('/signup/2');
+                    }
+                    else {
+                        alert(`${response.data.message}`)
+                    }
+                })
+        }
+        await setUserName();
     };
+
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4 sm:p-6 lg:p-8">
@@ -27,7 +43,7 @@ const SignUserName = () => {
                         id="username"
                         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500"
                         placeholder="Enter your username"
-                        value={username}
+                        value={userName}
                         onChange={handleInputChange}
                         required
                         aria-required="true"
@@ -37,8 +53,8 @@ const SignUserName = () => {
                 <button
                     type="button"
                     onClick={handleNextClick}
-                    disabled={!username}
-                    className={`text-white ${username ? 'bg-orange-600 hover:bg-orange-700' : 'bg-gray-400 cursor-not-allowed'} focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center`}
+                    // disabled={!username}
+                    className={`text-white ${userName ? 'bg-orange-600 hover:bg-orange-700' : 'bg-gray-400 cursor-not-allowed'} focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center`}
                 >
                     Next
                 </button>
