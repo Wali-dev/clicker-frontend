@@ -16,20 +16,22 @@ const SignUp = () => {
     const handleRepeatPasswordChange = (e) => setRepeatPassword(e.target.value);
     const handleTermsChange = (e) => setTermsAccepted(e.target.checked);
 
-    const checkEmailExists = async (email) => {
-        try {
-            const response = await axios.post('/api/check-email', { email });
-            return response.data.exists; // Assuming the response has an 'exists' field
-        } catch (error) {
-            console.error('Error checking email:', error);
-            return false;
-        }
-    };
+    // const checkEmailExists = async (email) => {
+    //     try {
+    //         const response = await axios.post('/api/check-email', { email });
+    //         // 
+    //         return response
+
+    //     } catch (error) {
+    //         console.error('Error checking email:', error);
+    //         return false;
+    //     }
+    // };
 
     const handleNextClick = async () => {
         if (password !== repeatPassword) {
             setPasswordMatch(false);
-            // Reset password fields
+            // RESET PASSWORD FIELDS
             setPassword('');
             setRepeatPassword('');
             return;
@@ -37,20 +39,60 @@ const SignUp = () => {
         setPasswordMatch(true);
 
         // Check if email exists
-        const emailExists = await checkEmailExists(email);
-        if (emailExists) {
-            setEmailError('Email is already registered. Please use a different email.');
-            return;
+        // const emailExists = await checkEmailExists(email);
+        // if (emailExists) {
+        //     setEmailError('Email is already registered. Please use a different email.');
+        //     return;
+        // }
+        // setEmailError('');
+
+        const setEmailandPassword = async () => {
+            const userName = localStorage.getItem('userName');
+            const config = {
+                params: { userName }
+            };
+            const data = {
+                email,
+                password
+            }
+
+            //UPDATE STEP COMPLETE
+            const setCompletedStep = async () => {
+                const userName = localStorage.getItem('userName');
+                const config = {
+                    params: { userName }
+                };
+                const data = {
+                    "step_completed": 2
+                }
+                await axios.patch('http://localhost:8000/api/user/update', data, config)
+
+                    //NULL IS ADDED CAUSE WE DONT WANT TO SEND ANYTHING IN THE BODY ONLY SENDIGN USERNAME AS QUERY PARAMS
+                    .then(response => {
+                        if (response.status === 200) {
+                            navigate('/signup/3');
+                        }
+                        else {
+                            alert("Can not register you now")
+                        }
+                        console.log(response)
+                    })
+            }
+
+            await axios.patch('http://localhost:8000/api/user/register', data, config)
+                //NULL IS ADDED CAUSE WE DONT WANT TO SEND ANYTHING IN THE BODY ONLY SENDIGN USERNAME AS QUERY PARAMS
+                .then(response => {
+                    if (response.data.status === 'Success') {
+                        setCompletedStep(); //CALL FOR UPDATE STEP COMPLETED FUNCTION
+                    }
+                    else {
+                        alert(`${response.data.message}`)
+                    }
+                })
         }
-        setEmailError('');
+        await setEmailandPassword();
 
-        // Call your function here with state values
-        console.log('Email:', email);
-        console.log('Password:', password);
-        console.log('Terms Accepted:', termsAccepted);
 
-        // Navigate to the next page
-        navigate('/signup/3');
     };
 
     return (
