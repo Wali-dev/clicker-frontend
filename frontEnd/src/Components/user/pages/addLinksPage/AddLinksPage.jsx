@@ -30,7 +30,7 @@ const AddLinksPage = () => {
 
     useEffect(() => {
         //GET THE STORED TOKEN OF THE CURRENT USER
-        const storedToken = localStorage.getItem('authToken');
+        const storedToken = sessionStorage.getItem('authToken');
 
         //USING THE TOKEN TO GET HE USER INFORMATIONS
         const fetchUserName = async () => {
@@ -46,6 +46,9 @@ const AddLinksPage = () => {
 
     useEffect(() => {
         const { userName } = currentUser;
+
+        //SET USERNAME IN THE LOCAL SOTRAGE FOR FURTHER USE
+        sessionStorage.setItem('userName', userName)
         const fetchLinks = async () => {
             const response = await axios.get('http://localhost:8000/api/link', {
                 params: { userName }

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const SignUserProfession = () => {
     const [mainCategory, setMainCategory] = useState('');
@@ -10,32 +11,32 @@ const SignUserProfession = () => {
     const navigate = useNavigate(); // Initialize useNavigate
 
     const categories = {
-        'Technology': ['Software Development', 'IT Support'],
-        'Healthcare': ['Medical Professionals', 'Allied Health'],
-        'Education': ['Teaching', 'Administration'],
-        'Media Production': ['Film Production', 'Television Production'],
-        'Journalism': ['Print Journalism', 'Broadcast Journalism'],
-        'Design': ['Graphic Design', 'Web Design'],
-        'Student': ['High School Student', 'College Student', 'Graduate Student'],
-        'OnlyFans': ['Content Creator', 'Marketing Specialist', 'Community Manager'],
-        'Software Development': ['Software Engineer', 'Web Developer', 'Mobile App Developer', 'Backend Developer'],
-        'IT Support': ['IT Support Specialist', 'Systems Administrator', 'Network Administrator', 'Technical Support Analyst'],
-        'Medical Professionals': ['Doctor', 'Nurse', 'Surgeon', 'Pharmacist'],
-        'Allied Health': ['Physical Therapist', 'Occupational Therapist', 'Radiologic Technologist', 'Medical Laboratory Technician'],
-        'Teaching': ['Elementary School Teacher', 'High School Teacher', 'College Professor', 'Special Education Teacher'],
-        'Administration': ['School Principal', 'Educational Counselor', 'School Administrator', 'Curriculum Developer'],
-        'Film Production': ['Film Director', 'Producer', 'Cinematographer', 'Film Editor'],
-        'Television Production': ['TV Producer', 'Camera Operator', 'Scriptwriter', 'Broadcast Engineer'],
-        'Print Journalism': ['Newspaper Reporter', 'Magazine Journalist', 'Editor', 'Photojournalist'],
-        'Broadcast Journalism': ['News Anchor', 'TV Reporter', 'Radio Host', 'Field Producer'],
-        'Graphic Design': ['Graphic Designer', 'Art Director', 'Illustrator', 'Brand Designer'],
-        'Web Design': ['Web Designer', 'UI/UX Designer', 'Front-End Developer', 'Web Developer'],
-        'High School Student': ['High School Freshman', 'High School Sophomore', 'High School Junior', 'High School Senior'],
-        'College Student': ['Undergraduate Student', 'Graduate Student', 'International Student', 'Transfer Student'],
-        'Graduate Student': ['Master’s Student', 'Ph.D. Student', 'Postdoctoral Researcher', 'Graduate Research Assistant'],
-        'Content Creator': ['Video Content Creator', 'Photo Content Creator', 'Live Streamer', 'Podcaster'],
-        'Marketing Specialist': ['Digital Marketer', 'SEO Specialist', 'Social Media Manager', 'Content Strategist'],
-        'Community Manager': ['Community Engagement Specialist', 'Moderator', 'Customer Support Representative', 'Event Coordinator']
+        'Technology': ['Software Development', 'IT Support', 'Other'],
+        'Healthcare': ['Medical Professionals', 'Allied Health', 'Other'],
+        'Education': ['Teaching', 'Administration', 'Other'],
+        'Media Production': ['Film Production', 'Television Production', 'Other'],
+        'Journalism': ['Print Journalism', 'Broadcast Journalism', 'Other'],
+        'Design': ['Graphic Design', 'Web Design', 'Other'],
+        'Student': ['High School Student', 'College Student', 'Graduate Student', 'Other'],
+        'OnlyFans': ['Content Creator', 'Marketing Specialist', 'Community Manager', 'Other'],
+        'Software Development': ['Software Engineer', 'Web Developer', 'Mobile App Developer', 'Backend Developer', 'Other'],
+        'IT Support': ['IT Support Specialist', 'Systems Administrator', 'Network Administrator', 'Technical Support Analyst', 'Other'],
+        'Medical Professionals': ['Doctor', 'Nurse', 'Surgeon', 'Pharmacist', 'Other'],
+        'Allied Health': ['Physical Therapist', 'Occupational Therapist', 'Radiologic Technologist', 'Medical Laboratory Technician', 'Other'],
+        'Teaching': ['Elementary School Teacher', 'High School Teacher', 'College Professor', 'Special Education Teacher', 'Other'],
+        'Administration': ['School Principal', 'Educational Counselor', 'School Administrator', 'Curriculum Developer', 'Other'],
+        'Film Production': ['Film Director', 'Producer', 'Cinematographer', 'Film Editor', 'Other'],
+        'Television Production': ['TV Producer', 'Camera Operator', 'Scriptwriter', 'Broadcast Engineer', 'Other'],
+        'Print Journalism': ['Newspaper Reporter', 'Magazine Journalist', 'Editor', 'Photojournalist', 'Other'],
+        'Broadcast Journalism': ['News Anchor', 'TV Reporter', 'Radio Host', 'Field Producer', 'Other'],
+        'Graphic Design': ['Graphic Designer', 'Art Director', 'Illustrator', 'Brand Designer', 'Other'],
+        'Web Design': ['Web Designer', 'UI/UX Designer', 'Front-End Developer', 'Web Developer', 'Other'],
+        'High School Student': ['High School Freshman', 'High School Sophomore', 'High School Junior', 'High School Senior', 'Other'],
+        'College Student': ['Undergraduate Student', 'Graduate Student', 'International Student', 'Transfer Student', 'Other'],
+        'Graduate Student': ['Master’s Student', 'Ph.D. Student', 'Postdoctoral Researcher', 'Graduate Research Assistant', 'Other'],
+        'Content Creator': ['Video Content Creator', 'Photo Content Creator', 'Live Streamer', 'Podcaster', 'Other'],
+        'Marketing Specialist': ['Digital Marketer', 'SEO Specialist', 'Social Media Manager', 'Content Strategist', 'Other'],
+        'Community Manager': ['Community Engagement Specialist', 'Moderator', 'Customer Support Representative', 'Event Coordinator', 'Other']
     };
 
     const handleMainCategoryChange = (e) => {
@@ -70,14 +71,36 @@ const SignUserProfession = () => {
         setShowSubSuggestions(true); // Show sub-category suggestions on focus
     };
 
-    const handleLetsGoClick = () => {
+    const handleLetsGoClick = async () => {
         // Call your modify function here
         console.log('Main Category:', mainCategory);
         console.log('Sub Category:', subCategory);
         // You can replace these console logs with actual function calls
 
+        const userName = sessionStorage.getItem('userName');
+        const config = {
+            params: { userName }
+        };
+        const data = {
+            "step_completed": 3,
+            "profession_main_catagory": mainCategory,
+            "profession_sub_catagory": subCategory
+        }
+        await axios.patch('http://localhost:8000/api/user/update', data, config)
+
+            //NULL IS ADDED CAUSE WE DONT WANT TO SEND ANYTHING IN THE BODY ONLY SENDIGN USERNAME AS QUERY PARAMS
+            .then(response => {
+                if (response.status === 200) {
+                    navigate('/admin/links');
+                }
+                else {
+                    alert("Can not update now, try again later")
+                }
+                console.log(response)
+            })
+
         // Navigate to another page
-        navigate('/admin/links');
+        // navigate('/admin/links');
     };
 
     return (

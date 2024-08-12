@@ -18,9 +18,10 @@ const ArchivedLinks = () => {
     const [usersLinks, setUserslink] = useState();
 
     useEffect(() => {
+        const userName = sessionStorage.getItem('userName');
         const fetchLinks = async () => {
             const response = await axios.get('http://localhost:8000/api/link', {
-                params: { userName: "Mahi" }
+                params: { userName }
             });
 
             //FILTERING LINKS IF THEY ARE DELETED AND ARCHIVED OR NOT

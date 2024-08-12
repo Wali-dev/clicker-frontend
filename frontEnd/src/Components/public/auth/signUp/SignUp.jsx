@@ -47,7 +47,7 @@ const SignUp = () => {
         // setEmailError('');
 
         const setEmailandPassword = async () => {
-            const userName = localStorage.getItem('userName');
+            const userName = sessionStorage.getItem('userName');
             const config = {
                 params: { userName }
             };
@@ -57,8 +57,8 @@ const SignUp = () => {
             }
 
             //UPDATE STEP COMPLETE
-            const setCompletedStep = async () => {
-                const userName = localStorage.getItem('userName');
+            const setCompletedStep = async (res) => {
+                const userName = sessionStorage.getItem('userName');
                 const config = {
                     params: { userName }
                 };
@@ -70,12 +70,12 @@ const SignUp = () => {
                     //NULL IS ADDED CAUSE WE DONT WANT TO SEND ANYTHING IN THE BODY ONLY SENDIGN USERNAME AS QUERY PARAMS
                     .then(response => {
                         if (response.status === 200) {
+                            sessionStorage.setItem('authToken', res.data.token);
                             navigate('/signup/3');
                         }
                         else {
                             alert("Can not register you now")
                         }
-                        console.log(response)
                     })
             }
 
@@ -83,7 +83,8 @@ const SignUp = () => {
                 //NULL IS ADDED CAUSE WE DONT WANT TO SEND ANYTHING IN THE BODY ONLY SENDIGN USERNAME AS QUERY PARAMS
                 .then(response => {
                     if (response.data.status === 'Success') {
-                        setCompletedStep(); //CALL FOR UPDATE STEP COMPLETED FUNCTION
+                        setCompletedStep(response); //CALL FOR UPDATE STEP COMPLETED FUNCTION 
+                        //SENT THE RESPONSE ALSO CAUSE THIS RESPONSE STORES THE TOKEN
                     }
                     else {
                         alert(`${response.data.message}`)

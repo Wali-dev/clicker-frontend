@@ -19,7 +19,7 @@ const SignUserName = () => {
                 //NULL IS ADDED CAUSE WE DONT WANT TO SEND ANYTHING IN THE BODY ONLY SENDIGN USERNAME AS QUERY PARAMS
                 .then(response => {
                     if (response.data.status === 'Success') {
-                        localStorage.setItem('userName', response.data.user.userName); //STORE THE USERNAME IN LOCAL STORAGE
+                        sessionStorage.setItem('userName', response.data.user.userName); //STORE THE USERNAME IN LOCAL STORAGE
                         navigate('/signup/2');
                     }
                     else {

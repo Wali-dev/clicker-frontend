@@ -30,7 +30,7 @@ const SignIn = () => {
                 await axios.post("http://localhost:8000/api/auth/login", body)
                     .then(response => {
                         if (response.data.status === 'Success') {
-                            localStorage.setItem('authToken', response.data.token); //STORE THE TOKEN IN LOCAL STORAGE
+                            sessionStorage.setItem('authToken', response.data.token); //STORE THE TOKEN IN LOCAL STORAGE
                             navigate('/admin/links');
                         }
                         else {
