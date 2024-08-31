@@ -6,12 +6,19 @@ import uuid from 'react-uuid';
 import axios from 'axios';
 import LinkCard from "../../../ui/LinkCard";
 import { NavLink } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 axios.defaults.baseURL = "http://localhost:8000/";
 
 // const userName = "Mahi";
 
+
 const AddLinksPage = () => {
+    const notify = () => toast.success("Link copied!", {
+        theme: "colored"
+    })
+
     //SET CURRENT USER
     const [currentUser, setCurrentUser] = useState("");
 
@@ -105,6 +112,7 @@ const AddLinksPage = () => {
             await postLink();
         }
 
+
         return (
 
             <form className="w-full bg-white p-6 mt-6 rounded-2xl shadow-lg" onSubmit={handleSubmit}>
@@ -153,6 +161,18 @@ const AddLinksPage = () => {
         )
     }
 
+    //Create a dynamic url
+    const baseUrl = `${window.location.protocol}//${window.location.host}`;
+    const linksUrl = `${baseUrl}/u/${currentUser.userName}`
+
+    //copy to clipboard
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(linksUrl);
+
+        //give a toast message
+
+        notify()
+    }
     return (
         <div className="mt-4 mx-4">
 
@@ -160,12 +180,13 @@ const AddLinksPage = () => {
             <div className="flex flex-wrap justify-between bg-blue-200 rounded-3xl py-4 px-6 items-center">
                 <div className="flex flex-col">
                     <span className="text-sm text-gray-700">Your links are live here:</span>
-                    <a href={`http://localhost:5173/${currentUser.userName}`} className="text-orange-600 hover:underline">
-                        {`http://localhost:5173/${currentUser.userName}`}
+                    <a href={linksUrl} className="text-orange-600 hover:underline">
+                        {linksUrl}
                     </a>
                 </div>
-                <button className="px-4 py-2 bg-orange-600 text-white font-semibold text-sm rounded-full shadow-md hover:bg-orange-700 transition-colors">
+                <button onClick={() => copyToClipboard()} className="px-4 py-2 bg-orange-600 text-white font-semibold text-sm rounded-full shadow-md hover:bg-orange-700 transition-colors">
                     Copy your Clicker URL
+                    <ToastContainer autoClose={2000} />
                 </button>
             </div>
 
@@ -205,7 +226,7 @@ const AddLinksPage = () => {
                     <LinkCard props={link} key={index} onTrigger={handleTriggerFromChild} />
                 ))}
             </div>
-        </div>
+        </div >
 
     )
 }

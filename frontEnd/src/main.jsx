@@ -51,7 +51,7 @@ const router = createBrowserRouter([
     },
   },
   {
-    path: '/:userName',
+    path: '/u/:userName',
     element: <PublicPage />
   },
   {
